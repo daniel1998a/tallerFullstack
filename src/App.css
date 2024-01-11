@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+.my-butt{
+  padding: 10px 20px;
+  background-color: #0f0e0f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: left !important;
+  position: relative;
+  top: 0px;
+  width: 110px;
+  left: 750px;
+ 
+}
+
+.pagination > span{
+
+  padding: 15px 20px;
+  border: 1px solid gray;
+  cursor: pointer;
+}
