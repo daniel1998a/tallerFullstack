@@ -14,6 +14,7 @@ const MascotasComponent=()=>{
     const [edad,setEdad]=useState('');
     const [raza,setRaza]=useState('');
     const [descrip_cor,setDescrip_cor]=useState('');
+    const [descrip_larg,setDescrip_larg]=useState('');
     const [operacion, setOperacion] = useState("");
     const [titulo,setTitulo]=useState("");
 
@@ -27,12 +28,13 @@ const MascotasComponent=()=>{
         setPerros(respuesta.data);
     };
 
-    const openModal =(opcion, id, nombre, edad, raza, descrip_cor)=>{
+    const openModal =(opcion, id, nombre, edad, raza, descrip_cor, descrip_larg)=>{
         setId('');
         setNombre('');
         setEdad('');
         setRaza('');
         setDescrip_cor('');
+        setDescrip_larg('');
         setOperacion(opcion);
         if(opcion == 1){
             setTitulo("Registrar Perros")
@@ -43,7 +45,8 @@ const MascotasComponent=()=>{
             setNombre(nombre);
             setEdad(edad);
             setRaza(raza);
-            setDescrip_cor('');
+            setDescrip_cor(descrip_cor);
+            setDescrip_larg(descrip_larg);
         }
     };
 
@@ -66,6 +69,10 @@ const MascotasComponent=()=>{
           console.log("Debe escribir una descriocion corta");
           mostrarAlerta("Debe escribir una drecripcion corta")
         }
+        else if(descrip_larg.trim()==''){
+          console.log("Debe escribir una descriocion corta");
+          mostrarAlerta("Debe escribir una drecripcion larga")
+        }
         else{
            if(operacion==1){
             parametros={
@@ -73,7 +80,8 @@ const MascotasComponent=()=>{
                 nombre: nombre.trim(),
                 edad: edad.trim(),
                 raza: raza.trim(),   
-                descrip_cor: descrip_cor.trim() 
+                descrip_cor: descrip_cor.trim(),
+                descrip_larg: descrip_larg.trim()
             };
             metodo="POST";
            }
@@ -82,8 +90,9 @@ const MascotasComponent=()=>{
                 urlExt: `${url}/actualizar/${id}`,
                 nombre: nombre.trim(),
                 edad: edad.trim(),
-                raza: raza.trim(),
-                descrip_cor: descrip_cor.trim() 
+                raza: raza.trim(),   
+                descrip_cor: descrip_cor.trim(),
+                descrip_larg: descrip_larg.trim()
             };
             metodo="PUT";
            }
@@ -129,11 +138,13 @@ const MascotasComponent=()=>{
     
       }
 
+      
+
     const [currentPage, setcurrentPage]= useState(1)
     const recordsPerPage = 3;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
-    const records = perros.slice(firstIndex, lastIndex);
+    //const records = perros.slice(firstIndex, lastIndex);
     const npage = Math.ceil(perros.length /  recordsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
@@ -174,12 +185,13 @@ const MascotasComponent=()=>{
                     <th>RAZA</th>
                     <th>FOTO</th>
                     <th>DESCRIPCION</th>
+                    <th>DESCRIPCION LARGA</th>
                   </tr>
                 </thead>
                 <tbody className="table-group-divider">
                   {
                     
-                    records.map((perro, i) => (
+                    perros.slice(currentPage * 3 -3,currentPage * 3).map((perro, i) => (
                       <tr key={perro.id}>
                         <td>{perro.id}</td>
                         <td>{perro.nombre}</td>
@@ -187,9 +199,11 @@ const MascotasComponent=()=>{
                         <td>{perro.raza}</td>
                         <td>{perro.url}</td>
                         <td>{perro.descrip_cor}</td>
+                        <td>{perro.descrip_larg}</td>
                         <td>
+                          
                           <button
-                            onClick={() => openModal(2, perro.id, perro.nombre, perro.edad, perro.raza, perro.descrip_cor)} //mustra los datos en actualizar
+                            onClick={() => openModal(2, perro.id, perro.nombre, perro.edad, perro.raza, perro.descrip_cor, perro.descrip_larg)} //mustra los datos en actualizar
                             className="btn btn-warning"
                             data-bs-toggle="modal"
                             data-bs-target="#modalMascotas">
@@ -288,6 +302,19 @@ const MascotasComponent=()=>{
                     placeholder="descrip_cor"
                     value={descrip_cor}
                     onChange={(e) => setDescrip_cor(e.target.value)}
+                  ></input>
+                </div>
+                <div className="input-group mb-3">
+                  <span className="input-group-text">
+                    <i className="fa-solid fa-gift"></i>
+                  </span>
+                  <input
+                    type="text"
+                    id="descrip_larg"
+                    className="form-control"
+                    placeholder="descrip_larg"
+                    value={descrip_larg}
+                    onChange={(e) => setDescrip_larg(e.target.value)}
                   ></input>
                 </div>
                 <div className="d-grid col-6 mx-auto">
